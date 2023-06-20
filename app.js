@@ -3,7 +3,6 @@
 let gameOver = false;
 
 // set hero ship stats
-
 let heroShip = {
     hull: 20,
     firepower: 5,
@@ -22,6 +21,7 @@ const enemyStats = () => {
     // ramdon for accuracy
     let enemyAccuracy = Math.floor((Math.floor(Math.random()*(9-6)+6)));
 
+    // set enemy object
     let enemy = {
         hull: enemyHull,
         firepower: enemyFirepower,
@@ -29,6 +29,7 @@ const enemyStats = () => {
         image:""
     };
 
+    // return enemy object
     return enemy;
 }
 
@@ -37,28 +38,36 @@ let enemyArrayLength = 6;
 let enemyFleet = [];
 
 
-
+// fill enemy array
 for (let i = 0; i< enemyArrayLength; i++){
     enemyFleet.push(enemyStats());
 }
 
-
-
 // hero attack
 const heroAttack = (hero, enemy) => {
+
     enemy.hull -= hero.firepower;
+
+    // if hull is negative make it zero
     if (enemy.hull<0){
         enemy.hull = 0;
     }
+
+    // return enemy
     return enemy;
 }
 
 // enemy attack
 const enemyAttack = (hero, enemy) => {
+
     hero.hull -= enemy.firepower;
+
+    // if hull is negative make it zero
     if (hero.hull<0){
         hero.hull = 0;
     }
+
+    // return hero
     return hero;
 }
 
@@ -70,15 +79,16 @@ const retreat = () => {
 // combat turns
 const combat = (hero, enemy) => {
 
-
+    // iniate round
     let round = 1;
 
     console.log("");
     console.log(enemy.length + " enemies left");
 
-
+    // while loop to go through rounds
     while (hero.hull>0 && enemy.length>0 && gameOver===false){
 
+        // set current enemy to new hull value after hero attacks
         enemy[0] = heroAttack(hero, enemy[0]);
 
         console.log("");
@@ -89,10 +99,12 @@ const combat = (hero, enemy) => {
         console.log("enemy ship now has " + enemy[0].hull + " HP");
         console.log("");
 
+        // if current enemy hull is zero remove it from array
         if (enemy[0].hull===0){
             enemy.shift();
         }
 
+        // if all enemies are destroyed hero wins
         if (enemy.length===0){
             console.log("Hero Wins!!!");
             gameOver = true;
@@ -100,6 +112,7 @@ const combat = (hero, enemy) => {
 
             console.log("=============================================================================");
 
+            // set hero hull value after enemy attacks
             hero = enemyAttack(hero, enemy[0]);
 
             console.log("ENEMY TURN");
@@ -112,6 +125,7 @@ const combat = (hero, enemy) => {
             console.log("");
         }
 
+        // if hero hull is zero hero loses
         if (hero.hull<=0){
             console.log("Hero Loses!!!!!");
             gameOver = true;
@@ -120,6 +134,7 @@ const combat = (hero, enemy) => {
         // setTimeout(() => {
         // }, "2000");
 
+        // incriment round
         round++;
 
     }
@@ -127,5 +142,6 @@ const combat = (hero, enemy) => {
 
 }
 
+// calls combat function
 combat(heroShip, enemyFleet);
 
