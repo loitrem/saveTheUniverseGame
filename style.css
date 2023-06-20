@@ -1,0 +1,124 @@
+body {
+    margin: 0;
+}
+
+.headerWrapper {
+    height: 100px;
+    width: 100%;
+    border: solid black;
+}
+
+.mainContentWrapper {
+    height: 55vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.mainConent {
+    height: 100%;
+    width: 80%;
+    border: solid red;
+}
+
+.topContentWrapper{
+    height: 75%;
+    width: 100%;
+    display: flex;
+}
+
+.topLeftContentWrapper {
+    width: 250px;
+    height: 100%;
+    border: solid black;
+}
+
+.HeroShip {
+
+}
+
+.heroShipImg {
+    height: 250px;
+    width: 250px;
+}
+
+.topMiddleWrapper {
+    width: 100%;
+    height: 100%;
+    border: solid rgb(49, 140, 185);
+}
+
+.topMiddle {
+
+}
+
+.topRightWrapper {
+    width: 250px;
+    height: 100%;
+    border: solid black;
+}
+
+.enemyShip {
+
+}
+
+.enemyShipImg {
+    height: 250px;
+    width: 250px;
+}
+
+.bottomConentWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.bottomContent {
+    width: 75%;
+    height: 25%;
+    border: solid rgb(15, 160, 56);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.menu {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.menuLeft {
+
+}
+
+.startGame {
+    height: 40px;
+    width: 125px;
+    border: 2px solid lightgray;
+    border-radius: 25px;
+}
+
+.menuCenter {
+
+}
+
+.fire {
+    height: 40px;
+    width: 125px;
+    border: 2px solid lightgray;
+    border-radius: 25px;
+}
+
+.menuRight {
+
+}
+
+.retreat {
+    height: 40px;
+    width: 125px;
+    border: 2px solid lightgray;
+    border-radius: 25px;
+}
