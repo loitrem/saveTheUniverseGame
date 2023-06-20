@@ -76,6 +76,15 @@ const retreat = () => {
     return true;
 }
 
+//animate each ship
+const animate = () => {
+    let enemyShipDiv = document.querySelector('.enemyShipImg');
+    enemyShipDiv.setAttribute('src', 'enemy4.png');
+    enemyShipDiv.setAttribute('class', 'enemyShipImg enemyShip');
+
+
+}
+
 // combat turns
 const combat = (hero, enemy) => {
 
@@ -102,6 +111,7 @@ const combat = (hero, enemy) => {
         // if current enemy hull is zero remove it from array
         if (enemy[0].hull===0){
             enemy.shift();
+            animate();
         }
 
         // if all enemies are destroyed hero wins
@@ -143,5 +153,5 @@ const combat = (hero, enemy) => {
 }
 
 // calls combat function
-combat(heroShip, enemyFleet);
+// combat(heroShip, enemyFleet);
 
