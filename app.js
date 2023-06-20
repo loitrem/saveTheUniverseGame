@@ -1,5 +1,7 @@
 // save the universe
 
+let gameOver = false;
+
 // set hero ship stats
 
 let heroShip = {
@@ -34,19 +36,29 @@ const enemyStats = () => {
 let enemyArrayLength = 6;
 let enemyFleet = [];
 
+
+
 for (let i = 0; i< enemyArrayLength; i++){
     enemyFleet.push(enemyStats());
 }
 
+
+
 // hero attack
 const heroAttack = (hero, enemy) => {
     enemy.hull -= hero.firepower;
+    if (enemy.hull<0){
+        enemy.hull = 0;
+    }
     return enemy;
 }
 
 // enemy attack
 const enemyAttack = (hero, enemy) => {
     hero.hull -= enemy.firepower;
+    if (hero.hull<0){
+        hero.hull = 0;
+    }
     return hero;
 }
 
@@ -60,53 +72,53 @@ const combat = (hero, enemy) => {
 
 
     let round = 1;
-    let currentEnemy = 0;
 
-    while (hero.hull>0 && enemy.length>0){
+    console.log("");
+    console.log(enemy.length + " enemies left");
 
-        console.log(enemy);
-        console.log("=============================================================================");
-        console.log(enemy.length + " enemies left");
-        console.log("=============================================================================");
-        console.log("hero ship hull: " + hero.hull);
-        console.log("=============================================================================");
-        console.log("enemy ship hull: " + enemy[currentEnemy].hull);
 
-        heroAttack(hero, enemy[currentEnemy]);
+    while (hero.hull>0 && enemy.length>0 && gameOver===false){
 
+        enemy[0] = heroAttack(hero, enemy[0]);
+
+        console.log("");
         console.log("Round", round);
         console.log("=============================================================================");
         console.log("HERO TURN");
         console.log("Hero Attacks enemy for " + hero.firepower + " damage");
-        console.log("enemy ship now has " + enemy[currentEnemy].hull + " HP");
+        console.log("enemy ship now has " + enemy[0].hull + " HP");
+        console.log("");
 
-        if (enemy[currentEnemy].hull<=0){
-            currentEnemy++;
+        if (enemy[0].hull===0){
             enemy.shift();
         }
 
-        console.log("=============================================================================");
-        console.log(enemy.length + " enemies left");
-        console.log("=============================================================================");
+        if (enemy.length===0){
+            console.log("Hero Wins!!!");
+            gameOver = true;
+        } else {
 
+            console.log("=============================================================================");
 
-        enemyAttack(hero, enemy[currentEnemy]);
+            hero = enemyAttack(hero, enemy[0]);
 
-        console.log("ENEMY TURN");
-        console.log("enemy Attacks hero for " + enemy[currentEnemy].firepower + " damage");
-        console.log("hero ship now has " + hero.hull + " HP");
-        console.log("=============================================================================");
+            console.log("ENEMY TURN");
+            console.log("enemy Attacks hero for " + enemy[0].firepower + " damage");
+            console.log("hero ship now has " + hero.hull + " HP");
+            console.log("");
+            console.log("=============================================================================");
+            console.log(enemy.length + " enemies left");
+            console.log("=============================================================================");
+            console.log("");
+        }
 
         if (hero.hull<=0){
             console.log("Hero Loses!!!!!");
+            gameOver = true;
         }
 
-        if (enemy[currentEnemy].length===0){
-            console.log("Hero Wins!!!");
-        }
-
-        setTimeout(() => {
-        }, "2000");
+        // setTimeout(() => {
+        // }, "2000");
 
         round++;
 
