@@ -4,19 +4,19 @@ body {
 }
 
 .headerWrapper {
-    height: 100px;
+    height: 150px;
     width: 100%;
 }
 
 
 .bannerImg {
-    height: 100px;
+    height: 150px;
     width: 100%;
     border-bottom: 5px solid white;
 }
 
 .mainContentWrapper {
-    height: 50vh;
+    height: 700px;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -30,7 +30,7 @@ body {
 }
 
 .topContentWrapper{
-    height: 80%;
+    height: 50%;
     width: 100%;
     display: flex;
 }
@@ -40,10 +40,6 @@ body {
     height: 100%;
     display: flex;
     align-items: center;
-}
-
-.HeroShip {
-    animation: hero .5s ease-in-out;
 }
 
 @keyframes hero {
@@ -59,17 +55,24 @@ body {
 .heroShipImg {
     height: 250px;
     width: 250px;
+    animation: hero .5s ease-in-out;
+}
+
+.heroShipImgHide {
+    height: 250px;
+    width: 250px;
+    display: none;
 }
 
 .topMiddleWrapper {
     width: 100%;
     height: 100%;
-    border: solid rgb(49, 140, 185);
     display: flex;
     align-items: center;
 }
 
 .topMiddle {
+    width: 100%;
 
 }
 
@@ -80,9 +83,39 @@ body {
     align-items: center;
 }
 
-.enemyShip {
-    animation: enemy .5s ease-in-out;
+.laser {
+    height: 45px;
+    animation: laser .5s ease-in-out;
+
 }
+
+.laserHide {
+    height: 45px;
+    display: none;
+}
+
+@keyframes laser {
+    0% {
+        transform: translateX(0vw);
+    }
+
+    100% {
+        transform: translateX(50vw);
+    }
+}
+
+@keyframes laser {
+    0% {
+        transform: translateX(50vw);
+    }
+
+    100% {
+        transform: translateX(0vw);
+    }
+}
+
+
+
 
 @keyframes enemy {
     0% {
@@ -97,6 +130,13 @@ body {
 .enemyShipImg {
     height: 250px;
     width: 250px;
+    animation: enemy .5s ease-in-out;
+}
+
+.enemyShipImgHide {
+    height: 250px;
+    width: 250px;
+    display: none;
 }
 
 .bottomConentWrapper {
@@ -108,7 +148,7 @@ body {
 
 .bottomContent {
     width: 75%;
-    height: 15%;
+    height: 50%;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -121,7 +161,7 @@ body {
 .battleBox {
     border: 2px solid rgb(0, 0, 0);
     width: 90%;
-    height: 50px;
+    height: 275px;
     background-color: rgba(0, 0, 0, .7);
     color: white;
 }

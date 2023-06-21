@@ -1,6 +1,11 @@
 // save the universe
 
 let gameOver = false;
+let battleBox = document.querySelector('.battleBox');
+let round = 1;
+let shipsDestroyed = 0;
+let winner = "";
+let winMsg = "";
 
 // set hero ship stats
 let heroShip = {
@@ -76,79 +81,127 @@ const retreat = () => {
     return true;
 }
 
+let ships = ["enemy4.png", "enemy5.png", "enemy6.png", "enemy7.png","boss.png"];
+
 //animate each ship
 const animate = () => {
-    let enemyShipDiv = document.querySelector('.enemyShipImg');
-    enemyShipDiv.setAttribute('src', 'enemy4.png');
-    enemyShipDiv.setAttribute('class', 'enemyShipImg enemyShip');
+    let enemyShipOld = document.querySelector('.enemyShipImg');
+    let laser = document.querySelector('laserHide');
 
+    enemyShipOld.setAttribute('src', ships[0]);
 
+    enemyShipOld.removeAttribute('class');
+    
+    // the magic
+    void enemyShipOld.offsetWidth;
+
+    enemyShipOld.setAttribute('class', 'enemyShipImg');
+    
+    ships.shift();
+}
+
+// start game
+const start = () => {
+
+    let heroShipHide = document.querySelector('.heroShipImgHide');
+    heroShipHide.setAttribute('class', 'heroShipImg heroShip');
+
+    let enemyShipHide = document.querySelector('.enemyShipImgHide');
+    enemyShipHide.setAttribute('class', "enemyShipImg");
+
+    battleBox.innerHTML = "Round: " + round  + "<br><br>"  + "Enemies Left: " + enemyFleet.length + "<br><br>" + 
+        "Hero Hull " + heroShip.hull + "<br><br>" + "ENEMIES DESTROYED: " + shipsDestroyed + "<br><br>" + "Enemy hull is at " + enemyFleet[0].hull + "";
+
+        round++;
+    
 }
 
 // combat turns
 const combat = (hero, enemy) => {
 
-    // iniate round
-    let round = 1;
+    if (gameOver===false){
 
-    console.log("");
-    console.log(enemy.length + " enemies left");
-
-    // while loop to go through rounds
-    while (hero.hull>0 && enemy.length>0 && gameOver===false){
-
-        // set current enemy to new hull value after hero attacks
-        enemy[0] = heroAttack(hero, enemy[0]);
+        let enemyShipDiv = document.querySelector('.enemyShipImg');
+        let heroShipDiv = document.querySelector('.heroShipImg');
 
         console.log("");
-        console.log("Round", round);
-        console.log("=============================================================================");
-        console.log("HERO TURN");
-        console.log("Hero Attacks enemy for " + hero.firepower + " damage");
-        console.log("enemy ship now has " + enemy[0].hull + " HP");
-        console.log("");
+        console.log(enemy.length + " enemies left");
 
-        // if current enemy hull is zero remove it from array
-        if (enemy[0].hull===0){
-            enemy.shift();
-            animate();
-        }
+        if (winner!="HERO" && winner!="ENEMY" && hero.hull >0 || enemy[0].hull>0){
 
-        // if all enemies are destroyed hero wins
-        if (enemy.length===0){
-            console.log("Hero Wins!!!");
-            gameOver = true;
-        } else {
+            // set current enemy to new hull value after hero attacks
+            enemy[0] = heroAttack(hero, enemy[0]);
 
-            console.log("=============================================================================");
-
-            // set hero hull value after enemy attacks
-            hero = enemyAttack(hero, enemy[0]);
-
-            console.log("ENEMY TURN");
-            console.log("enemy Attacks hero for " + enemy[0].firepower + " damage");
-            console.log("hero ship now has " + hero.hull + " HP");
             console.log("");
+            console.log("Round", round);
             console.log("=============================================================================");
-            console.log(enemy.length + " enemies left");
-            console.log("=============================================================================");
+            console.log("HERO TURN");
+            console.log("Hero Attacks enemy for " + hero.firepower + " damage");
+            console.log("enemy ship now has " + enemy[0].hull + " HP");
             console.log("");
+
+            // if current enemy hull is zero remove it from array
+            if (enemy[0].hull<=0 && enemy.length>1){
+                enemy.shift();
+                animate();
+                shipsDestroyed++;
+            } 
+
+            // if all enemies are destroyed hero wins
+            if (enemy.length===1 && enemy[0].hull===0){
+                console.log("Hero Wins!!!");
+                gameOver = true;
+                winner = "HERO";
+                enemyShipDiv.remove();
+                winMsg = "Winner is - HERO!!!!!";
+
+                battleBox.innerHTML = "Round: " + round  + "<br><br>"  + "Enemies Left: " + enemy.length + "<br><br>" + 
+            "Hero Hull " + hero.hull + "<br><br>" + "ENEMIES DESTROYED: " + shipsDestroyed +  "<br><br>" + "Enemy hull is at " + enemy[0].hull + "<br><br>" + " HERO ATTACKS ENEMY for " 
+            + hero.firepower + " damage ENEMY SHIP now has " + enemy[0].hull + " HP" + "<br><br>" 
+            + "<br><br>" + winMsg;
+
+            } else {
+
+                console.log("=============================================================================");
+
+                // set hero hull value after enemy attacks
+                hero = enemyAttack(hero, enemy[0]);
+
+                console.log("ENEMY TURN");
+                console.log("enemy Attacks hero for " + enemy[0].firepower + " damage");
+                console.log("hero ship now has " + hero.hull + " HP");
+                console.log("");
+                console.log("=============================================================================");
+                console.log(enemy.length + " enemies left");
+                console.log("=============================================================================");
+                console.log("");
+            }
+
+            // if hero hull is zero hero loses
+            if (hero.hull<=0 && ships.length>0){
+                console.log("Hero Loses!!!!!");
+                gameOver = true;
+                winner = "ENEMY";
+                hero.hull = 0;
+                enemyShipDiv.setAttribute('src', ships[0]);
+                console.log(ships[0]);
+                heroShipDiv.setAttribute('class', 'enemyShipImgHide');
+                winMsg = "Winner is - ENEMY!!!!!";
+            }
+
+
+            battleBox.innerHTML = "Round: " + round  + "<br><br>"  + "Enemies Left: " + enemy.length + "<br><br>" + 
+            "Hero Hull " + hero.hull + "<br><br>" + "ENEMIES DESTROYED: " + shipsDestroyed +  "<br><br>" + "Enemy hull is at " + enemy[0].hull + "<br><br>" + " HERO ATTACKS ENEMY for " 
+            + hero.firepower + " damage ENEMY SHIP now has " + enemy[0].hull + " HP" + "<br><br>" 
+            + "ENEMY ATTACKS HERO for " + enemy[0].firepower + " damage HERO SHIP now " +  
+            "has " + hero.hull + " HP" +  "<br><br>" + winMsg;
+
+
+            // incriment round
+            round++;
+
         }
-
-        // if hero hull is zero hero loses
-        if (hero.hull<=0){
-            console.log("Hero Loses!!!!!");
-            gameOver = true;
-        }
-
-        // setTimeout(() => {
-        // }, "2000");
-
-        // incriment round
-        round++;
-
     }
-
 
 }
 
