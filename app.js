@@ -2,6 +2,8 @@
 
 let gameOver = false;
 let battleBox = document.querySelector('.battleBox');
+let laser = document.querySelector('.laserHide');
+let topMiddle = document.querySelector('.topMiddle');
 let round = 1;
 let shipsDestroyed = 0;
 let winner = "";
@@ -86,7 +88,7 @@ let ships = ["enemy4.png", "enemy5.png", "enemy6.png", "enemy7.png","boss.png"];
 //animate each ship
 const animate = () => {
     let enemyShipOld = document.querySelector('.enemyShipImg');
-    let laser = document.querySelector('laserHide');
+    let laser = document.querySelector('laser');
 
     enemyShipOld.setAttribute('src', ships[0]);
 
@@ -99,6 +101,38 @@ const animate = () => {
     
     ships.shift();
 }
+
+const shootRight = () => {
+
+    let laser = document.querySelector('.laserHide');
+
+    const rehide = () => {
+
+            laser.setAttribute('class', 'laserHide left');  
+    }
+
+    const shootLeft = () => {
+
+            let laserLeft = document.querySelector('.left');
+        
+            const rehideLeft = () => {
+                laser.setAttribute('class', 'laserHide left');
+            }
+
+            laserLeft.setAttribute('class', 'laserLeft');
+            laserLeft.setAttribute('src', 'laserleft.png');
+            setTimeout(rehideLeft, 450);   
+        
+    }
+
+    laser.setAttribute('class', 'laserRight');
+    laser.setAttribute('src', 'laserright.png');
+    void laser.offsetWidth;
+    setTimeout(rehide, 450);
+    setTimeout(shootLeft, 450);
+
+}
+
 
 // start game
 const start = () => {
@@ -139,6 +173,7 @@ const combat = (hero, enemy) => {
             console.log("Hero Attacks enemy for " + hero.firepower + " damage");
             console.log("enemy ship now has " + enemy[0].hull + " HP");
             console.log("");
+            shootRight();
 
             // if current enemy hull is zero remove it from array
             if (enemy[0].hull<=0 && enemy.length>1){
@@ -175,6 +210,7 @@ const combat = (hero, enemy) => {
                 console.log(enemy.length + " enemies left");
                 console.log("=============================================================================");
                 console.log("");
+                console.log("test");
             }
 
             // if hero hull is zero hero loses
