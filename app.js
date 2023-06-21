@@ -80,6 +80,21 @@ const enemyAttack = (hero, enemy) => {
 
 // retreat
 const retreat = () => {
+
+    let retreat = document.querySelector('.heroShip');
+    console.log(retreat);
+    retreat.removeAttribute('class');
+    void laser.offsetWidth;
+    retreat.setAttribute('class', 'run');
+
+    const hide = () => {
+        retreat.setAttribute('class', 'heroShipImgHide');
+        battleBox.innerHTML = "You have retreated - GAME OVER - ENEMIES WIN";
+    }
+
+    setTimeout(hide, 450);
+
+
     return true;
 }
 

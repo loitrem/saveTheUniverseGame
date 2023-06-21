@@ -52,16 +52,32 @@ body {
     }
 }
 
+@keyframes retreat {
+    0% {
+        transform: rotate(180deg) translateX(0vw);
+    }
+
+    100% {
+        transform: rotate(180deg) translateX(30vw);
+    }
+}
+
 .heroShipImg {
     height: 250px;
     width: 250px;
     animation: hero .5s ease-in-out;
 }
 
+.run {
+    height: 250px;
+    width: 250px;
+    animation: retreat .5s ease-in-out; 
+}
+
 .heroShipImgHide {
     height: 250px;
     width: 250px;
-    display: none;
+    visibility: hidden;
 }
 
 .topMiddleWrapper {
