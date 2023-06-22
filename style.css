@@ -109,12 +109,12 @@ body {
 .laserLeft {
     height: 45px;
     width: 100px;
-    animation: laserLeft .5s ease-in-out;
+    animation: laserLeft .3s ease-in-out;
 }
 
 .laserHide {
     height: 45px;
-    opacity: 0;
+    visibility: hidden;
 }
 
 @keyframes laserRight {
@@ -144,9 +144,6 @@ body {
         transform:translateX(0vw);
     }
 }
-
-
-
 
 @keyframes enemy {
     0% {
@@ -212,6 +209,7 @@ body {
     display: flex;
     flex-direction: column;
     text-align: center;
+
 }
 
 .menu {
@@ -252,10 +250,35 @@ body {
 .stageScreen {
     width: 100%;
     display: flex;
+    justify-content: space-evenly;
+}
+
+.shopScreenWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: 35px;
+}
+
+.shopScreen {
+    width: 100%;
+    display: flex;
     justify-content: center;
 }
 
-.stageButton {
+
+.shopItem {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+}
+
+.stageButton, .shopButton, .shopHull, .shopFirepower, .shopAccuracy, .shopShields {
     height: 40px;
     width: 125px;
     border: 2px solid black;
@@ -268,7 +291,7 @@ body {
     margin: 10px;
 }
 
-.stageButton:hover {
+.stageButton:hover, .shopButton:hover {
     height: 40px;
     width: 125px;
     border: 2px solid black;
@@ -279,4 +302,46 @@ body {
     font-weight: bold;
     box-shadow: inset 0 0 9px 3px rgb(47, 0, 0);
     margin: 10px;
+}
+
+.stageButtonUpgrade {
+    height: 40px;
+    width: 175px;
+    border: 2px solid black;
+    background-color: darkred;
+    color: white;
+    border-radius: 25px;
+    font-size: 20px;
+    font-weight: bold;
+    box-shadow: inset 0 0 9px 3px rgb(47, 0, 0);
+    margin: 10px;
+}
+
+.stageButtonUpgrade:hover {
+    height: 40px;
+    width: 175px;
+    border: 2px solid black;
+    background-color: rgb(188, 0, 0);
+    color: white;
+    border-radius: 25px;
+    font-size: 20px;
+    font-weight: bold;
+    box-shadow: inset 0 0 9px 3px rgb(47, 0, 0);
+    margin: 10px;
+}
+
+.shopHullHide {
+    visibility: hidden;
+}
+
+.shopFirepowerHide {
+    visibility: hidden;
+}
+
+.shopAccuracyHide {
+    visibility: hidden;
+}
+
+.shopShieldsHide {
+    visibility: hidden;
 }

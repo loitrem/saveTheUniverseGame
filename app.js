@@ -35,6 +35,58 @@ class hero {
 
         return heroTemp;
     }
+
+    upgrade(category, menu){
+
+        // determine which button is clicked and perform accordingly
+        if (category==="hull") {
+  
+            if(points>=400) {
+                points -= 400;
+                let hullHide = document.querySelector('.shopHull');
+                hullHide.setAttribute('class', 'shopHullHide');    
+                earthHero.hull += 5;
+                earthHero = earthHero.setStats(earthHero);
+            }
+            
+        } else if (category==="firepower") {
+
+            if(points>=600) {
+                points -= 600;
+                let hullHide = document.querySelector('.shopFirepower');
+                hullHide.setAttribute('class', 'shopFirepowerHide');
+
+                earthHero.firepower += 1;
+                earthHero = earthHero.setStats(earthHero);
+            }
+
+        } else if (category==="accuracy") {
+
+            if(points>=500) {
+                points -= 500;
+                let hullHide = document.querySelector('.shopAccuracy');
+                hullHide.setAttribute('class', 'shopAccuracyHide');
+
+                earthHero.accuracy += 1;
+                earthHero = earthHero.setStats(earthHero);
+            }
+        } 
+
+        if (menu==="done") {
+
+            battleBox.innerHTML = "STAGE END" + "<br><br>" + "Would you like to continue?" + "<br><br>" + "Your shields will be recharged." + 
+                                "<br><br>" + "<div class='stageScreen'><button class='stageButton' onclick='shipCombat.nextStage(hero)'>Continue</button>" + 
+                                "<button class='stageButton' onclick='shipCombat.retreat()'>Run Away</button><button class='stageButtonUpgrade' onclick='earthHero.upgrade(``,`initial`)'>Upgrade Shop</button></div>";
+        } else if (menu==="initial"){
+            //sets up menu
+            battleBox.innerHTML = "<div class='shopScreenWrapper'>UPGRADE SHOP" + "<br><br>" + points + "<br><br>" + "<div class='shopScreen'>" + 
+                                "<div class='shopItem'>Cost: 400 Points<button class='shopButton shopHull' onclick='earthHero.upgrade(`hull`,`" + menu + "`)'>Hull</button></div>" + 
+                                "<div class='shopItem'>Cost: 600 Points<button class='shopButton shopFirepower' onclick='earthHero.upgrade(`firepower`,`" + menu + "`)'>Firepower</button></div>" + 
+                                "<div class='shopItem'>Cost: 500 Points<button class='shopButton shopAccuracy' onclick='earthHero.upgrade(`accuracy`,`" + menu + "`)'>Accuracy</button></div></div>" +  
+                                "<button class='shopButton' onclick='earthHero.upgrade(``,`done`)'>Done</button>" + "<br><br>" + "</div>";
+        }
+
+    }
 }
 // end hero class *************************************************************
 
@@ -95,7 +147,7 @@ class enemyShipArray {
             let enemyFirepower = Math.floor(Math.floor(Math.random()*(5-2)+2));
 
             // ramdon for accuracy
-            let enemyAccuracy = Math.floor((Math.floor(Math.random()*(9-6)+6)));
+            let enemyAccuracy = Math.floor(Math.floor(Math.random()*(9-6)+6));
 
             // set enemy object
             let enemyList = new enemy(enemyHull, enemyFirepower,enemyAccuracy, ships[i]);
@@ -138,6 +190,8 @@ class combat {
             battleBox.innerHTML = "Click fire to start combat";
 
             startBtn = true;
+            gameStart = true;
+            run = false;
             
             earthHero = new hero(earthHeroHull,earthHeroFirepower,earthHeroAccuracty,earthHeroImg, Math.floor(Math.floor(Math.random()*(4-1)+1)));
 
@@ -150,11 +204,13 @@ class combat {
         gameOver = false;
         gameStart = false;
         startBtn = false;
-        run = false;
+        run = run;
         shipsDestroyed = 0;
         currentShip = 0;
         stage = 1;
-        // earthHero = new hero(20,5,7,"hero.png", Math.floor(Math.floor(Math.random()*(3-0)+0)));
+        points = 0;
+        round = 0;
+        newStage = false;
         alienShip = new enemyShipArray();
         alienShipArray = alienShip.enemyArray(Math.floor(Math.floor(Math.random()*(10-6)+6)));
 
@@ -175,8 +231,8 @@ class combat {
 
     }
 
-     //next stage
-     nextStage(){
+    //next stage
+    nextStage(){
         battleBox.innerHTML = "";
         gameOver = false;
         gameStart = false;
@@ -223,7 +279,6 @@ class combat {
         gameStart = true;
         round = 0;
         stage++;
-        console.log(stage);
     }   
 
     //animate each ship
@@ -243,29 +298,27 @@ class combat {
         } else {
             enemyShipOld.setAttribute('src', 'explosion.png');
         }
-
     }
 
     // shoot right animation
     shootRight() {
 
         let laser = document.getElementById("laser");
-        console.log(laser);
 
         laser.setAttribute('class', 'laserRight');
         laser.setAttribute('src', 'laserright.png');
         void laser.offsetWidth;
 
         setTimeout(function() {
-            laser.setAttribute('class', 'laserHide left');  
-        }, 450);
+        laser.setAttribute('class', 'laserHide left');  
+        }, 250);
+
     }
 
     //shoot left animation
     shootLeft() {
         
             let laserLeft = document.getElementById("laser");
-            console.log(laserLeft);
             
             laserLeft.setAttribute('class', 'laserLeft');
             laserLeft.setAttribute('src', 'laserleft.png');
@@ -290,8 +343,7 @@ class combat {
 
         //sets attack chance random number 1-10
         let attackChance = Math.floor(Math.random()*10);
-        console.log("attack " + attackChance);
-        console.log("accuracy " + ship.accuracy);
+
         //checks if attack chance is in accuracy range
         if (attackChance<=ship.accuracy){
             return true;
@@ -396,8 +448,6 @@ class combat {
         }
 
             let retreat = document.querySelector('.heroShip');
-
-            // retreat.removeAttribute('class');
             
             retreat.setAttribute('class', 'run');
             void retreat.offsetWidth; 
@@ -405,7 +455,7 @@ class combat {
             battleBox.innerHTML = "You have retreated - GAME OVER - ENEMIES WIN" + "<br><br>" + "<button class='startGame' onclick='shipCombat.restart(" + hero +  ")'>Play Again</>";
 
             setTimeout(function() {
-                // void retreat.offsetWidth; 
+
                 retreat.setAttribute('class', 'heroShipImgHide');   
                 }, 450);
 
@@ -486,13 +536,14 @@ let startBtn = false;
 let stage = 1;
 let maxStage = 3;
 let newStage = false;
+let points = 0;
+let enemyMultiply = 0;
 
 // one round of combat per click
 const oneRound = () => {
 
     // if you hit start and have not retreated
     if (gameStart===true&&run===false){
-
         //next stage
         if (stage<=maxStage) {
 
@@ -510,7 +561,8 @@ const oneRound = () => {
             else if (shipCombat.enemiesLeft(alienShipArray)===false&&stage<maxStage&&newStage===false){
                 battleBox.setAttribute('class', 'battleBoxEnd');
                 battleBox.innerHTML = "STAGE END" + "<br><br>" + "Would you like to continue?" + "<br><br>" + "Your shields will be recharged." + 
-                "<br><br>" + "<div class='stageScreen'><button class='stageButton' onclick='shipCombat.nextStage(hero)'>Continue</button><button class='stageButton' onclick='shipCombat.retreat()'>Run Away</button></div>";
+                                    "<br><br>" + "<div class='stageScreen'><button class='stageButton' onclick='shipCombat.nextStage(hero)'>Continue</button>" + 
+                                    "<button class='stageButton' onclick='shipCombat.retreat()'>Run Away</button><button class='stageButtonUpgrade' onclick='earthHero.upgrade(``,`initial`)'>Upgrade Shop</button></div>";
                 newStage = true;
                 let startGameBtn = document.querySelector('.startGame');
                 startGameBtn.setAttribute('class', 'startGameHide');
@@ -526,7 +578,6 @@ const oneRound = () => {
                 if (gameOver===true&&run===false&&winner!=="hero"){
                     battleBox.setAttribute('class', 'battleBoxEnd');
                     battleBox.innerHTML = "GAME OVER" + "<br><br>" + "ENEMY WINS" + "<br><br>" + "<button class='startGame' onclick='shipCombat.restart()'>Play Again</>";
-                    console.log(shipCombat.enemiesLeft(alienShipArray));
                     gameStart = false;
                     gameOver = true;
                     winner = "enemy";
@@ -537,20 +588,19 @@ const oneRound = () => {
                 else if (shipCombat.enemiesLeft(alienShipArray)===false){
                     battleBox.setAttribute('class', 'battleBoxEnd');
                     battleBox.innerHTML = "GAME OVER" + "<br><br>" + "HERO WINS" + "<br><br>" + "<button class='startGame' onclick='shipCombat.restart()'>Play Again</>";
-                    console.log(shipCombat.enemiesLeft(alienShipArray));
                     gameStart = false;
                     gameOver = true;
                     winner = "hero";
                 }
             }
-            
+
             //checks if game is over
             if (gameOver===false&&newStage===false){
 
                 let survivor = combatResult[0][0];
                 let hero = combatResult[0][1];
                 let enemy = combatResult[0][2];
-                console.log(hero);
+
                 // checks if array has both objects or just one
                 if (survivor === "both"){
 
@@ -583,6 +633,7 @@ const oneRound = () => {
                     currentShip++;
                     alienShipArray.shift();
                     shipCombat.animate();
+                    points += 100;
                 } else if (survivor === "enemy"){
                     message =   "HERO Hull is at: " + hero.hull + " Shields can block: " + hero.shield + " more hits" + "<br><br>" + "ENEMY Hull is at: " + enemy.hull + "<br><br>" + 
                                 "ENEMY HITS HERO's hull (" + heroHullOld.hull + ") for " + enemy.firepower + " HERO IS DESTROYED";
@@ -594,12 +645,9 @@ const oneRound = () => {
                 }
 
                 //add text to battle box
-                battleBox.innerHTML = "Round: " + round + "<br><br>" + "Enemies left: " + alienShipArray.length + "<br><br>" + "Ships Destroyed: "
+                battleBox.innerHTML = "Points: " + points + "<br><br>" + "Round: " + round + "<br><br>" + "Enemies left: " + alienShipArray.length + "<br><br>" + "Ships Destroyed: "
                                     + shipsDestroyed + "<br><br>" + message + "<br><br>" + messageHero + "<br><br>" + messageEnemy; 
             }
         }
     }
 }
-
-
-
