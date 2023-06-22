@@ -129,19 +129,11 @@ body {
 
 @keyframes laserLeft {
     0% {
-        transform:rotate(180deg) translateX(0vw);
-    }
-
-    50% {
-        transform:rotate(180deg) translateX(-50vw);
-    }
-
-    51% {
         transform: translateX(50vw);
     }
 
     100% {
-        transform:translateX(0vw);
+        transform: translateX(0vw);
     }
 }
 

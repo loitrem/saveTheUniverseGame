@@ -303,14 +303,14 @@ class combat {
     // shoot right animation
     shootRight() {
 
-        let laser = document.getElementById("laser");
+        let laserRight = document.getElementById("laserr");
 
-        laser.setAttribute('class', 'laserRight');
-        laser.setAttribute('src', 'laserright.png');
-        void laser.offsetWidth;
+        laserRight.setAttribute('class', 'laserRight');
+        laserRight.setAttribute('src', 'laserright.png');
+        void laserRight.offsetWidth;
 
         setTimeout(function() {
-        laser.setAttribute('class', 'laserHide left');  
+        laserRight.setAttribute('class', 'laserHide');  
         }, 250);
 
     }
@@ -318,14 +318,15 @@ class combat {
     //shoot left animation
     shootLeft() {
         
-            let laserLeft = document.getElementById("laser");
-            
-            laserLeft.setAttribute('class', 'laserLeft');
-            laserLeft.setAttribute('src', 'laserleft.png');
-            
-            setTimeout(function() {
-                laser.setAttribute('class', 'laserHide left');  
-            }, 15000);
+        let laserLeft = document.getElementById("laserl");
+        
+        laserLeft.setAttribute('class', 'laserLeft');
+        laserLeft.setAttribute('src', 'laserleft.png');
+        void laserLeft.offsetWidth;
+        
+        setTimeout(function() {
+            laserLeft.setAttribute('class', 'laserHide');  
+        }, 250);
         }
 
 
@@ -370,6 +371,7 @@ class combat {
             if (enemy.hull<0){
                 enemy.hull = 0;
             }
+            this.shootRight();
 
             //returns enemy object
             return enemy;
@@ -404,6 +406,8 @@ class combat {
             if (hero.hull<0){
                 hero.hull = 0;
             }
+
+            this.shootLeft();
 
             //returns enemy object
             return hero;
@@ -473,7 +477,7 @@ class combat {
 
            //hero attacks first
             this.heroAttack(hero, enemy); 
-            this.shootRight();
+    
         }
 
         // make sure enemy is alive
@@ -481,7 +485,6 @@ class combat {
 
             //enemy attacks second
             this.enemyAttack(hero, enemy);
-            this.shootLeft();
         }
 
         //either returns an array with hero and enemy or
