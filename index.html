@@ -50,7 +50,7 @@
                         <!-- top middle -->
                         <div class="topMiddle">
                             
-                            <img src="laserright.png" alt="" class="laserHide right">
+                            <img id="laser" src="laserright.png" alt="" class="laserHide right">
                             
                         </div>
 
@@ -90,21 +90,21 @@
                             <!-- menu left -->
                             <div class="menuLeft">
 
-                                <button class="startGame" onclick="start()">START</button>
+                                <button class="startGame" onclick="shipCombat.start()">START</button>
 
                             </div>
 
                             <!-- menu center -->
                             <div class="menuCenter">
 
-                                <button class="fire" onclick="combat(heroShip, enemyFleet)">FIRE</button>
+                                <button class="fire" onclick="oneRound()">FIRE</button>
 
                             </div>
 
                             <!-- menu right -->
                             <div class="menuRight">
 
-                                <button class="retreat" onclick="retreat()">RETREAT</button>
+                                <button class="retreat" onclick="shipCombat.retreat()">RETREAT</button>
 
                             </div>
 
