@@ -2,11 +2,12 @@
 class hero {
 
     //hero constructor
-    constructor (hull, firepower, accuracy, image) {
+    constructor (hull, firepower, accuracy, image, shield) {
         this.hull = hull;
         this.firepower = firepower;
         this.accuracy = accuracy;
         this.image = image;
+        this.shield = shield;
     }
 
     //get stats
@@ -15,7 +16,8 @@ class hero {
             hull: this.hull,
             firepower: this.firepower,
             accuracy: this.accuracy,
-            image: this.image
+            image: this.image,
+            shield: this.shield
         }
         return heroShip;
     } 
@@ -29,6 +31,7 @@ class hero {
         heroTemp.firepower = heroNew.firepower;
         heroTemp.accuracy = heroNew.accuracy;
         heroTemp.image = heroNew.image;
+        heroTemp.shield = heroNew.shield;
 
         return heroTemp;
     }
@@ -81,7 +84,7 @@ class enemyShipArray {
 
         //iniate array
         let enemyArray = [];
-        let ships = ["enemy3.png","enemy4.png", "enemy5.png", "enemy6.png", "enemy7.png","boss.png"];
+        let ships = ["enemy3.png","enemy4.png", "enemy5.png", "enemy6.png", "enemy7.png","enemy3.png","enemy4.png", "enemy5.png", "enemy6.png", "enemy7.png"];
 
         for (let i = 0; i < numberOfShips; i++){
 
@@ -136,6 +139,35 @@ class combat {
 
             startBtn = true;
         }
+    }
+
+    //restart game
+    restart(){
+        battleBox.innerHTML = "";
+        gameOver = false;
+        gameStart = false;
+        startBtn = false;
+        run = false;
+        shipsDestroyed = 0;
+        currentShip = 0;
+        earthHero = new hero(20,5,7,"hero.png", Math.floor(Math.floor(Math.random()*(3-0)+0)));
+        alienShip = new enemyShipArray();
+        alienShipArray = alienShip.enemyArray(Math.floor(Math.floor(Math.random()*(10-6)+6)));
+
+        let heroShip = document.querySelector('.heroShipImg');
+
+        if (heroShip===null){
+            heroShip = document.querySelector('.heroShipImgHide');
+        }
+
+        heroShip.removeAttribute('class');
+        heroShip.setAttribute('class', 'heroShipImgHide');
+
+        let enemyShip = document.querySelector('.enemyShipImg');
+        enemyShip.removeAttribute('class');
+        enemyShip.setAttribute('class', "enemyShipImgHide");
+        enemyShip.setAttribute('src', "enemy3.png");
+
     }
 
     //animate each ship
@@ -231,7 +263,6 @@ class combat {
                 enemy.hull = 0;
             }
 
-           
             //returns enemy object
             return enemy;
         }
@@ -245,7 +276,8 @@ class combat {
 
             //checks if attack hits
             if (this.doesItHit(enemy)){
-                hero.hull -= enemy.firepower;
+                let tempHull = hero.hull += hero.shield;
+                hero.hull = tempHull - enemy.firepower;
                 enemyHit = true;
             } else {
                 enemyHit = false;
@@ -292,7 +324,7 @@ class combat {
             retreat.setAttribute('class', 'run');
             void retreat.offsetWidth; 
             battleBox.setAttribute('class', 'battleBoxEnd');
-            battleBox.innerHTML = "You have retreated - GAME OVER - ENEMIES WIN";
+            battleBox.innerHTML = "You have retreated - GAME OVER - ENEMIES WIN" + "<br><br>" + "<button class='startGame' onclick='shipCombat.restart()'>Play Again</>";
 
             setTimeout(function() {
                 // void retreat.offsetWidth; 
@@ -311,6 +343,9 @@ class combat {
 
         //make sure hero is alive
         if (this.isAlive(hero)){
+
+            //set hero shield this round
+            hero.shield = Math.floor(Math.floor(Math.random()*(3-0)+0));
 
            //hero attacks first
             this.heroAttack(hero, enemy); 
@@ -349,10 +384,10 @@ class combat {
 
 let round = 0;
 
-let earthHero = new hero(20,5,7,"hero.png");
+let earthHero = new hero(20,5,7,"hero.png", Math.floor(Math.floor(Math.random()*(3-0)+0)));
 let lastHero = new hero();
 let alienShip = new enemyShipArray();
-let alienShipArray = alienShip.enemyArray(6);
+let alienShipArray = alienShip.enemyArray(Math.floor(Math.floor(Math.random()*(10-6)+6)));
 let shipCombat = new combat();
 let battleBox = document.querySelector('.battleBox');
 let shipsDestroyed = 0;
@@ -370,6 +405,7 @@ let gameOver = false;
 let run = false;
 let winner = "";
 let startBtn = false;
+let heroShield = 0;
 
 // one round of combat per click
 const oneRound = () => {
@@ -386,73 +422,76 @@ const oneRound = () => {
         }
         else if (gameOver===true&&run===false&&winner!=="hero"){
             battleBox.setAttribute('class', 'battleBoxEnd');
-            battleBox.innerHTML = "GAME OVER" + "<br><br>" + "ENEMY WINS";
+            battleBox.innerHTML = "GAME OVER" + "<br><br>" + "ENEMY WINS" + "<br><br>" + "<button class='startGame' onclick='shipCombat.restart()'>Play Again</>";
             console.log(shipCombat.enemiesLeft(alienShipArray));
             gameStart = false;
             gameOver = true;
             winner = "enemy";
             let heroShipPic = document.querySelector('.heroShipImg');
             heroShipPic.setAttribute('src', 'explosion.png');
- 
+
         }
         else if (shipCombat.enemiesLeft(alienShipArray)===false){
             battleBox.setAttribute('class', 'battleBoxEnd');
-            battleBox.innerHTML = "GAME OVER" + "<br><br>" + "HERO WINS";
+            battleBox.innerHTML = "GAME OVER" + "<br><br>" + "HERO WINS" + "<br><br>" + "<button class='startGame' onclick='shipCombat.restart()'>Play Again</>";
             console.log(shipCombat.enemiesLeft(alienShipArray));
             gameOver = true;
             winner = "hero";
         }
         
+        //checks if game is over
+        if (gameOver===false){
 
-        let survivor = combatResult[0][0];
-        let hero = combatResult[0][1];
-        let enemy = combatResult[0][2];
+            let survivor = combatResult[0][0];
+            let hero = combatResult[0][1];
+            let enemy = combatResult[0][2];
+            console.log(hero);
+            // checks if array has both objects or just one
+            if (survivor === "both"){
 
-        // checks if array has both objects or just one
-        if (survivor === "both"){
+                //sets message if both ships are alive
+                message = "HERO Hull is at: " + hero.hull + " Current shield power is: " + hero.shield + "<br><br>" + "Enemy Hull is at: " + enemy.hull;
+                
+                // changes message depending on if hero's shot hit
+                if (heroHit === true){
+                    messageHero = "HERO HITS ENEMY's hull (" + enemyHullOld + ") for " + hero.firepower + "  Enemy Hull is now at " + enemy.hull;
+                } else if (heroHit===false){
+                    messageHero = "HERO's shot MISSES! Enemy hull is at " + enemy.hull;
+                }
 
-            //sets message if both ships are alive
-            message = "HERO Hull is at: " + hero.hull + "<br><br>" + "Enemy Hull is at: " + enemy.hull;
-            
-            // changes message depending on if hero's shot hit
-            if (heroHit === true){
-                messageHero = "HERO HITS ENEMY's hull (" + enemyHullOld + ") for " + hero.firepower + "  Enemy Hull is now at " + enemy.hull;
-            } else if (heroHit===false){
-                messageHero = "HERO's shot MISSES! Enemy hull is at " + enemy.hull;
+                // changes message depending on if enemy's shot hit
+                if (enemyHit === true){
+                    messageEnemy = "ENEMY HITS HERO for " + enemy.firepower + "  Hero Hull is now at " + hero.hull;
+                } else if (enemyHit===false){
+                    messageEnemy = "ENEMY's shot MISSES! Hero hull is at " + hero.hull;
+                }
+                round++;
+
+            } else if (survivor === "hero"){
+                message =   "HERO Hull is at: " + hero.hull + " Current shield power is: " + hero.shield + "<br><br>" + "ENEMY Hull is at: " + enemy.hull + "<br><br>" +  
+                            "HERO HITS ENEMY's hull (" + enemyHullOld + ") for " + hero.firepower + " ENEMY IS DESTROYED"
+                            + "<br><br>" + "ENEMY CANNOT ATTACK";
+                messageHero = "";
+                messageEnemy = "";
+                round++;
+                shipsDestroyed++;
+                currentShip++;
+                alienShipArray.shift();
+                shipCombat.animate();
+            } else if (survivor === "enemy"){
+                message =   "HERO Hull is at: " + hero.hull + " Current shield power is: " + hero.shield + "<br><br>" + "ENEMY Hull is at: " + enemy.hull + "<br><br>" + 
+                            "ENEMY HITS HERO's hull (" + heroHullOld.hull + ") for " + enemy.firepower + " HERO IS DESTROYED";
+                messageHero = "";
+                messageEnemy = "";
+                round++;
+                shipsDestroyed++;
+                gameOver = true;
             }
 
-            // changes message depending on if enemy's shot hit
-            if (enemyHit === true){
-                messageEnemy = "ENEMY HITS HERO for " + enemy.firepower + "  Hero Hull is now at " + hero.hull;
-            } else if (enemyHit===false){
-                messageEnemy = "ENEMY's shot MISSES! Hero hull is at " + hero.hull;
-            }
-            round++;
-
-        } else if (survivor === "hero"){
-            message =   "HERO Hull is at: " + hero.hull + "<br><br>" + "ENEMY Hull is at: " + enemy.hull + "<br><br>" +  
-                        "HERO HITS ENEMY's hull (" + enemyHullOld + ") for " + hero.firepower + " ENEMY IS DESTROYED"
-                        + "<br><br>" + "ENEMY CANNOT ATTACK";
-            messageHero = "";
-            messageEnemy = "";
-            round++;
-            shipsDestroyed++;
-            currentShip++;
-            alienShipArray.shift();
-            shipCombat.animate();
-        } else if (survivor === "enemy"){
-            message =   "HERO Hull is at: " + hero.hull + "<br><br>" + "ENEMY Hull is at: " + enemy.hull + "<br><br>" + 
-                        "ENEMY HITS HERO's hull (" + heroHullOld.hull + ") for " + enemy.firepower + " HERO IS DESTROYED";
-            messageHero = "";
-            messageEnemy = "";
-            round++;
-            shipsDestroyed++;
-            gameOver = true;
+            //add text to battle box
+            battleBox.innerHTML = "Round: " + round + "<br><br>" + "Enemies left: " + alienShipArray.length + "<br><br>" + "Ships Destroyed: "
+                                + shipsDestroyed + "<br><br>" + message + "<br><br>" + messageHero + "<br><br>" + messageEnemy; 
         }
-
-        //add text to battle box
-        battleBox.innerHTML = "Round: " + round + "<br><br>" + "Hero Ship hull: " + hero.hull + "<br><br>" + "Ships Destroyed: "
-                            + shipsDestroyed + "<br><br>" + message + "<br><br>" + messageHero + "<br><br>" + messageEnemy; 
     }
 }
 
