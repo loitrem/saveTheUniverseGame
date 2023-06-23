@@ -41,8 +41,8 @@ class hero {
         // determine which button is clicked and perform accordingly
         if (category==="hull") {
 
-            if(points>=300) {
-                points -= 300;
+            if(points>=200) {
+                points -= 200;
                 let hullHide = document.querySelector('.shopHull');
                 hullHide.setAttribute('class', 'shopHullHide');    
                 earthHero.hull += 5;
@@ -51,8 +51,8 @@ class hero {
             
         } else if (category==="firepower") {
 
-            if(points>=500) {
-                points -= 500;
+            if(points>=300) {
+                points -= 300;
                 let hullHide = document.querySelector('.shopFirepower');
                 hullHide.setAttribute('class', 'shopFirepowerHide');
 
@@ -80,8 +80,8 @@ class hero {
         } else if (menu==="initial"){
             //sets up menu
             battleBox.innerHTML = "<div class='shopScreenWrapper'>UPGRADE SHOP" + "<br><br>" + points + "<br><br>" + "<div class='shopScreen'>" + 
-                                "<div class='shopItem'>Cost: 300 Points<button class='shopButton shopHull' onclick='earthHero.upgrade(`hull`,`" + menu + "`)'>Hull</button></div>" + 
-                                "<div class='shopItem'>Cost: 500 Points<button class='shopButton shopFirepower' onclick='earthHero.upgrade(`firepower`,`" + menu + "`)'>Firepower</button></div>" + 
+                                "<div class='shopItem'>Cost: 200 Points<button class='shopButton shopHull' onclick='earthHero.upgrade(`hull`,`" + menu + "`)'>Hull</button></div>" + 
+                                "<div class='shopItem'>Cost: 300 Points<button class='shopButton shopFirepower' onclick='earthHero.upgrade(`firepower`,`" + menu + "`)'>Firepower</button></div>" + 
                                 "<div class='shopItem'>Cost: 400 Points<button class='shopButton shopAccuracy' onclick='earthHero.upgrade(`accuracy`,`" + menu + "`)'>Accuracy</button></div></div>" +  
                                 "<button class='shopButton' onclick='earthHero.upgrade(``,`done`)'>Done</button>" + "<br><br>" + "</div>";
         }
