@@ -40,9 +40,9 @@ class hero {
 
         // determine which button is clicked and perform accordingly
         if (category==="hull") {
-  
-            if(points>=400) {
-                points -= 400;
+
+            if(points>=300) {
+                points -= 300;
                 let hullHide = document.querySelector('.shopHull');
                 hullHide.setAttribute('class', 'shopHullHide');    
                 earthHero.hull += 5;
@@ -51,8 +51,8 @@ class hero {
             
         } else if (category==="firepower") {
 
-            if(points>=600) {
-                points -= 600;
+            if(points>=500) {
+                points -= 500;
                 let hullHide = document.querySelector('.shopFirepower');
                 hullHide.setAttribute('class', 'shopFirepowerHide');
 
@@ -62,8 +62,8 @@ class hero {
 
         } else if (category==="accuracy") {
 
-            if(points>=500) {
-                points -= 500;
+            if(points>=400) {
+                points -= 400;
                 let hullHide = document.querySelector('.shopAccuracy');
                 hullHide.setAttribute('class', 'shopAccuracyHide');
 
@@ -80,9 +80,9 @@ class hero {
         } else if (menu==="initial"){
             //sets up menu
             battleBox.innerHTML = "<div class='shopScreenWrapper'>UPGRADE SHOP" + "<br><br>" + points + "<br><br>" + "<div class='shopScreen'>" + 
-                                "<div class='shopItem'>Cost: 400 Points<button class='shopButton shopHull' onclick='earthHero.upgrade(`hull`,`" + menu + "`)'>Hull</button></div>" + 
-                                "<div class='shopItem'>Cost: 600 Points<button class='shopButton shopFirepower' onclick='earthHero.upgrade(`firepower`,`" + menu + "`)'>Firepower</button></div>" + 
-                                "<div class='shopItem'>Cost: 500 Points<button class='shopButton shopAccuracy' onclick='earthHero.upgrade(`accuracy`,`" + menu + "`)'>Accuracy</button></div></div>" +  
+                                "<div class='shopItem'>Cost: 300 Points<button class='shopButton shopHull' onclick='earthHero.upgrade(`hull`,`" + menu + "`)'>Hull</button></div>" + 
+                                "<div class='shopItem'>Cost: 500 Points<button class='shopButton shopFirepower' onclick='earthHero.upgrade(`firepower`,`" + menu + "`)'>Firepower</button></div>" + 
+                                "<div class='shopItem'>Cost: 400 Points<button class='shopButton shopAccuracy' onclick='earthHero.upgrade(`accuracy`,`" + menu + "`)'>Accuracy</button></div></div>" +  
                                 "<button class='shopButton' onclick='earthHero.upgrade(``,`done`)'>Done</button>" + "<br><br>" + "</div>";
         }
 
@@ -540,10 +540,38 @@ let stage = 1;
 let maxStage = 3;
 let newStage = false;
 let points = 0;
-let enemyMultiply = 0;
+let change = 0;
+let count = 1;
 
 // one round of combat per click
 const oneRound = () => {
+
+    if (stage===1){
+        change = 1;
+        if (alienShipArray.length>0&&count===stage){
+            for (let i = 0; i< alienShipArray.length; i++){
+            alienShipArray[i].hull = Math.floor(alienShipArray[i].hull * change); 
+            }
+            count++;   
+        }
+        
+    } else if (stage===2){
+        change = 1.5;
+        if (alienShipArray.length>0&&count===stage){
+            for (let i = 0; i< alienShipArray.length; i++){
+            alienShipArray[i].hull = Math.floor(alienShipArray[i].hull * change); 
+            }  
+            count++;  
+        }
+    } else if (stage===3){
+        change = 2;
+        if (alienShipArray.length>0&&count===stage){
+            for (let i = 0; i< alienShipArray.length; i++){
+            alienShipArray[i].hull = Math.floor(alienShipArray[i].hull * change); 
+            }    
+            count++;   
+        }
+    }
 
     // if you hit start and have not retreated
     if (gameStart===true&&run===false){
@@ -559,6 +587,7 @@ const oneRound = () => {
                 enemyHullOld = alienShipArray[0].hull;
                 heroHullOld = lastHero.setStats(earthHero);
                 combatResult.push(shipCombat.fight(earthHero, alienShipArray[0]));
+
             }
             // if not max stage
             else if (shipCombat.enemiesLeft(alienShipArray)===false&&stage<maxStage&&newStage===false){
